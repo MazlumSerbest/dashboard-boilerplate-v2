@@ -1,9 +1,94 @@
+"use client";
+
+import { ColumnDef } from "@tanstack/react-table";
+import { Button } from "@/components/ui/button";
+
+import DataTable from "@/components/table/DataTable";
+import BoolChip from "@/components/BoolChip";
+import { ChevronsUpDown } from "lucide-react";
+import { DateTimeFormat } from "@/lib/utils";
+
 export default function Users() {
+    //#region Table
+    const visibleColumns = { created_at: false, updated_at: false };
+
+    const columns: ColumnDef<any, any>[] = [
+        {
+            accessorKey: "name",
+            header: ({ column }) => (
+                <div className="flex flex-row items-center">
+                    Name
+                    <Button
+                        variant="ghost"
+                        className="p-1"
+                        onClick={() =>
+                            column.toggleSorting(column.getIsSorted() === "asc")
+                        }
+                    >
+                        <ChevronsUpDown className="size-4" />
+                    </Button>
+                </div>
+            ),
+            cell: ({ row }) => {
+                const data: string = row.getValue("name");
+
+                return <div className="font-medium">{data || "-"}</div>;
+            },
+        },
+        {
+            accessorKey: "mfa_status",
+            header: "MFA Status",
+            enableGlobalFilter: false,
+            cell: ({ row }) => {
+                const data: string = row.getValue("mfa_status");
+
+                return <BoolChip value={data == "enabled"} />;
+            },
+        },
+        {
+            accessorKey: "enabled",
+            header: "Enabled",
+            enableGlobalFilter: false,
+            cell: ({ row }) => {
+                const data: boolean = row.getValue("enabled");
+
+                return <BoolChip value={data} />;
+            },
+        },
+        {
+            accessorKey: "createdAt",
+            header: "Created At",
+            enableGlobalFilter: false,
+            cell: ({ row }) => {
+                const data: string = row.getValue("created_at");
+
+                return <p>{DateTimeFormat(data)}</p>;
+            },
+        },
+        {
+            accessorKey: "updatedAt",
+            header: "Updated At",
+            enableGlobalFilter: false,
+            cell: ({ row }) => {
+                const data: string = row.getValue("updated_at");
+
+                return <p>{DateTimeFormat(data)}</p>;
+            },
+        },
+    ];
+    //#endregion
+
     return (
-        <section className="flex flex-col gap-4 p-4 lg:gap-6 lg:p-6">
-            <div className="flex items-center">
-                <h1 className="text-lg font-semibold md:text-2xl">Users</h1>
-            </div>
+        <section className="flex flex-col">
+            <DataTable
+                zebra
+                data={[]}
+                columns={columns}
+                visibleColumns={visibleColumns}
+                // onDoubleClick={(item) => {
+                //     router.push("clients/" + item?.id);
+                // }}
+            />
         </section>
     );
 }

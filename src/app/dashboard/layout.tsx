@@ -45,7 +45,7 @@ export default function DashboardLayout({
                     <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
                         <Link
                             href="/"
-                            className="flex items-center gap-2 font-semibold text-indigo-500"
+                            className="flex items-center gap-2 font-semibold text-indigo-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:!ring-indigo-500/80"
                         >
                             <Box className="size-6" />
                             <span>Dashboard Boilerplate V2</span>
@@ -68,7 +68,7 @@ export default function DashboardLayout({
                                     key={p.key}
                                     href={p.path}
                                     className={cn(
-                                        "flex items-center gap-3 rounded-lg px-3 py-2",
+                                        "flex items-center gap-3 rounded-lg px-3 py-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:!ring-indigo-500/80",
                                         p.path == pathName
                                             ? "bg-muted text-indigo-500"
                                             : "text-muted-foreground",
@@ -131,7 +131,7 @@ export default function DashboardLayout({
                                             // key={p.key}
                                             href={p.path}
                                             className={cn(
-                                                "mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2",
+                                                "mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:!ring-indigo-500/80",
                                                 p.path == pathName
                                                     ? "bg-muted text-indigo-500"
                                                     : "text-muted-foreground",
@@ -200,7 +200,7 @@ export default function DashboardLayout({
                             align="end"
                             className="text-muted-foreground"
                         >
-                            <DropdownMenuLabel className="text-primary">
+                            <DropdownMenuLabel className="text-indigo-500">
                                 My Account
                             </DropdownMenuLabel>
                             <DropdownMenuSeparator />

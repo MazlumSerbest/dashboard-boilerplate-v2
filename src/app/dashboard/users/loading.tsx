@@ -1,9 +1,11 @@
-import { DefaultSkeleton } from "@/components/loaders/Skeleton";
+import Skeleton, { DefaultSkeleton } from "@/components/loaders/Skeleton";
 
 export default function UsersLoading() {
     return (
         <div>
-            <DefaultSkeleton />
+            <Skeleton>
+                <DefaultSkeleton />
+            </Skeleton>
         </div>
     );
 }

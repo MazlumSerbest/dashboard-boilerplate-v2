@@ -20,16 +20,11 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import {
-    DropdownMenu,
-    DropdownMenuCheckboxItem,
-    DropdownMenuContent,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Pagination from "./Pagination";
 import ViewOptions from "./ViewOptions";
+import Loader from "../loaders/Loader";
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
@@ -37,6 +32,7 @@ interface DataTableProps<TData, TValue> {
     visibleColumns?: VisibilityState;
     basic?: boolean;
     zebra?: boolean;
+    isLoading?: boolean;
     onDoubleClick?: (item: any) => any;
 }
 
@@ -46,6 +42,7 @@ export default function DataTable<TData, TValue>({
     visibleColumns = {},
     basic = false,
     zebra = false,
+    isLoading = false,
     onDoubleClick,
 }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = useState<SortingState>([]);
@@ -111,46 +108,69 @@ export default function DataTable<TData, TValue>({
                         ))}
                     </TableHeader>
                     <TableBody>
-                        {table.getRowModel().rows?.length ? (
-                            table.getRowModel().rows.map((row) => (
-                                <TableRow
-                                    key={row.id}
-                                    data-state={
-                                        row.getIsSelected() && "selected"
-                                    }
-                                    className={`${
-                                        zebra ? "odd:bg-zinc-100/50" : ""
-                                    } ${onDoubleClick ? "cursor-pointer" : ""}`}
-                                    onDoubleClick={() =>
-                                        onDoubleClick
-                                            ? onDoubleClick(row)
-                                            : undefined
-                                    }
-                                    onTouchEnd={() =>
-                                        onDoubleClick
-                                            ? onDoubleClick(row)
-                                            : undefined
-                                    }
-                                >
-                                    {row.getVisibleCells().map((cell) => (
-                                        <TableCell key={cell.id}>
-                                            {flexRender(
-                                                cell.column.columnDef.cell,
-                                                cell.getContext(),
-                                            )}
-                                        </TableCell>
-                                    ))}
-                                </TableRow>
-                            ))
-                        ) : (
+                        {isLoading ? (
                             <TableRow>
                                 <TableCell
                                     colSpan={columns.length}
-                                    className="h-24 text-center"
+                                    className="h-24 justify-center"
                                 >
-                                    No results.
+                                    <Loader />
                                 </TableCell>
                             </TableRow>
+                        ) : (
+                            <>
+                                {table.getRowModel().rows?.length ? (
+                                    table.getRowModel().rows.map((row) => (
+                                        <TableRow
+                                            key={row.id}
+                                            data-state={
+                                                row.getIsSelected() &&
+                                                "selected"
+                                            }
+                                            className={`${
+                                                zebra
+                                                    ? "odd:bg-zinc-100/50"
+                                                    : ""
+                                            } ${
+                                                onDoubleClick
+                                                    ? "cursor-pointer"
+                                                    : ""
+                                            }`}
+                                            onDoubleClick={() =>
+                                                onDoubleClick
+                                                    ? onDoubleClick(row)
+                                                    : undefined
+                                            }
+                                            onTouchEnd={() =>
+                                                onDoubleClick
+                                                    ? onDoubleClick(row)
+                                                    : undefined
+                                            }
+                                        >
+                                            {row
+                                                .getVisibleCells()
+                                                .map((cell) => (
+                                                    <TableCell key={cell.id}>
+                                                        {flexRender(
+                                                            cell.column
+                                                                .columnDef.cell,
+                                                            cell.getContext(),
+                                                        )}
+                                                    </TableCell>
+                                                ))}
+                                        </TableRow>
+                                    ))
+                                ) : (
+                                    <TableRow>
+                                        <TableCell
+                                            colSpan={columns.length}
+                                            className="h-24 text-center"
+                                        >
+                                            No results.
+                                        </TableCell>
+                                    </TableRow>
+                                )}
+                            </>
                         )}
                     </TableBody>
                 </Table>

@@ -32,7 +32,7 @@ export default function Users() {
             cell: ({ row }) => {
                 const data: string = row.getValue("name");
 
-                return <div className="font-medium">{data || "-"}</div>;
+                return data || "-";
             },
         },
         {
@@ -62,7 +62,7 @@ export default function Users() {
             cell: ({ row }) => {
                 const data: string = row.getValue("created_at");
 
-                return <p>{DateTimeFormat(data)}</p>;
+                return DateTimeFormat(data);
             },
         },
         {
@@ -72,7 +72,7 @@ export default function Users() {
             cell: ({ row }) => {
                 const data: string = row.getValue("updated_at");
 
-                return <p>{DateTimeFormat(data)}</p>;
+                return DateTimeFormat(data);
             },
         },
     ];

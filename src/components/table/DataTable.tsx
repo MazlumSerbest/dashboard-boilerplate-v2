@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+
 import {
     ColumnDef,
     SortingState,
@@ -11,7 +12,6 @@ import {
     getSortedRowModel,
     useReactTable,
 } from "@tanstack/react-table";
-
 import {
     Table,
     TableBody,
@@ -22,9 +22,11 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+
 import Pagination from "./Pagination";
 import ViewOptions from "./ViewOptions";
 import Loader from "../loaders/Loader";
+import { cn } from "@/lib/utils";
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
@@ -33,6 +35,7 @@ interface DataTableProps<TData, TValue> {
     basic?: boolean;
     zebra?: boolean;
     isLoading?: boolean;
+    onClick?: (item: any) => any;
     onDoubleClick?: (item: any) => any;
 }
 
@@ -43,6 +46,7 @@ export default function DataTable<TData, TValue>({
     basic = false,
     zebra = false,
     isLoading = false,
+    onClick,
     onDoubleClick,
 }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = useState<SortingState>([]);
@@ -127,21 +131,17 @@ export default function DataTable<TData, TValue>({
                                                 row.getIsSelected() &&
                                                 "selected"
                                             }
-                                            className={`${
-                                                zebra
-                                                    ? "odd:bg-zinc-100/50"
-                                                    : ""
-                                            } ${
-                                                onDoubleClick
-                                                    ? "cursor-pointer"
-                                                    : ""
-                                            }`}
+                                            className={cn(
+                                                zebra && "odd:bg-zinc-100/50",
+                                                (onClick || onDoubleClick) &&
+                                                    "cursor-pointer",
+                                            )}
+                                            onClick={() => {
+                                                onClick
+                                                    ? onClick(row)
+                                                    : undefined;
+                                            }}
                                             onDoubleClick={() =>
-                                                onDoubleClick
-                                                    ? onDoubleClick(row)
-                                                    : undefined
-                                            }
-                                            onTouchEnd={() =>
                                                 onDoubleClick
                                                     ? onDoubleClick(row)
                                                     : undefined

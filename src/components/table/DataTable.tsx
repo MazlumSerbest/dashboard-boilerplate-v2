@@ -86,7 +86,7 @@ export default function DataTable<TData, TValue>(
 
     return (
         <div className="space-y-4">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 justify-between">
                 <Input
                     placeholder="Search..."
                     value={globalFilter ?? ""}
@@ -94,18 +94,20 @@ export default function DataTable<TData, TValue>(
                     className="max-w-sm"
                 />
 
-                <ViewOptions table={table} />
+                <div className="flex gap-2">
+                    <ViewOptions table={table} />
 
-                {onAddNew && (
-                    <Button
-                        size="sm"
-                        className="flex gap-2 bg-indigo-500 hover:bg-indigo-500/90"
-                        onClick={onAddNew}
-                    >
-                        <span className="sr-only lg:not-sr-only">Ekle</span>
-                        <Plus className="size-4" />
-                    </Button>
-                )}
+                    {onAddNew && (
+                        <Button
+                            size="sm"
+                            className="flex gap-2 bg-indigo-500 hover:bg-indigo-500/90"
+                            onClick={onAddNew}
+                        >
+                            <span className="sr-only lg:not-sr-only">Ekle</span>
+                            <Plus className="size-4" />
+                        </Button>
+                    )}
+                </div>
             </div>
 
             <div className="rounded-md border">

@@ -16,43 +16,49 @@ interface ViewOptionsProps<TData> {
 }
 
 export default function ViewOptions<TData>({ table }: ViewOptionsProps<TData>) {
+    const visibleColumns = table
+        .getAllColumns()
+        .filter(
+            (column) =>
+                typeof column.accessorFn !== "undefined" && column.getCanHide(),
+        );
+
     return (
-        <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-                <Button
-                    variant="outline"
-                    size="sm"
-                    className="ml-auto h-8 flex"
-                >
-                    <MixerHorizontalIcon className="lg:mr-2 size-4" />
-                    <span className="sr-only lg:not-sr-only">Columns</span>
-                </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-[150px]">
-                {/* <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
+        <>
+            {visibleColumns.length > 0 && (
+                <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            className="h-8 gap-2 flex"
+                        >
+                            <MixerHorizontalIcon className="size-4" />
+                            <span className="sr-only lg:not-sr-only">
+                                Columns
+                            </span>
+                        </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-[150px]">
+                        {/* <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
         <DropdownMenuSeparator /> */}
-                {table
-                    .getAllColumns()
-                    .filter(
-                        (column) =>
-                            typeof column.accessorFn !== "undefined" &&
-                            column.getCanHide(),
-                    )
-                    .map((column) => {
-                        return (
-                            <DropdownMenuCheckboxItem
-                                key={column.id}
-                                className="capitalize"
-                                checked={column.getIsVisible()}
-                                onCheckedChange={(value) =>
-                                    column.toggleVisibility(!!value)
-                                }
-                            >
-                                {column.id}
-                            </DropdownMenuCheckboxItem>
-                        );
-                    })}
-            </DropdownMenuContent>
-        </DropdownMenu>
+                        {visibleColumns.map((column) => {
+                            return (
+                                <DropdownMenuCheckboxItem
+                                    key={column.id}
+                                    className="capitalize"
+                                    checked={column.getIsVisible()}
+                                    onCheckedChange={(value) =>
+                                        column.toggleVisibility(!!value)
+                                    }
+                                >
+                                    {column.id}
+                                </DropdownMenuCheckboxItem>
+                            );
+                        })}
+                    </DropdownMenuContent>
+                </DropdownMenu>
+            )}
+        </>
     );
 }

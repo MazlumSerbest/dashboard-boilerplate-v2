@@ -85,6 +85,7 @@ export default function Users() {
                 data={[]}
                 columns={columns}
                 visibleColumns={visibleColumns}
+                onAddNew={() => {}}
                 // onDoubleClick={(item) => {
                 //     router.push("clients/" + item?.id);
                 // }}

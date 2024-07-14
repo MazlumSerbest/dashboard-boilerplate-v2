@@ -27,6 +27,7 @@ import Pagination from "./Pagination";
 import ViewOptions from "./ViewOptions";
 import Loader from "../loaders/Loader";
 import { cn } from "@/lib/utils";
+import { Plus } from "lucide-react";
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
@@ -35,20 +36,26 @@ interface DataTableProps<TData, TValue> {
     basic?: boolean;
     zebra?: boolean;
     isLoading?: boolean;
+    onAddNew?: () => any;
     onClick?: (item: any) => any;
     onDoubleClick?: (item: any) => any;
 }
 
-export default function DataTable<TData, TValue>({
-    columns,
-    data,
-    visibleColumns = {},
-    basic = false,
-    zebra = false,
-    isLoading = false,
-    onClick,
-    onDoubleClick,
-}: DataTableProps<TData, TValue>) {
+export default function DataTable<TData, TValue>(
+    props: DataTableProps<TData, TValue>,
+) {
+    const {
+        columns,
+        data = [],
+        visibleColumns = {},
+        basic = false,
+        zebra = false,
+        isLoading = false,
+        onAddNew,
+        onClick,
+        onDoubleClick,
+    } = props;
+
     const [sorting, setSorting] = useState<SortingState>([]);
     // const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
     const [globalFilter, setGlobalFilter] = useState("");
@@ -88,6 +95,17 @@ export default function DataTable<TData, TValue>({
                 />
 
                 <ViewOptions table={table} />
+
+                {onAddNew && (
+                    <Button
+                        size="sm"
+                        className="flex gap-2 bg-indigo-500 hover:bg-indigo-500/90"
+                        onClick={onAddNew}
+                    >
+                        <span className="sr-only lg:not-sr-only">Ekle</span>
+                        <Plus className="size-4" />
+                    </Button>
+                )}
             </div>
 
             <div className="rounded-md border">
